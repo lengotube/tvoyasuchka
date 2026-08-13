@@ -1,0 +1,24 @@
+import type { Metadata } from "next";
+import "./globals.css";
+
+export const metadata: Metadata = {
+  title: "TvoyaAIbot — твой AI-компаньон",
+  description: "Telegram-first AI companion с отношениями, памятью и прозрачной оплатой Stars.",
+  openGraph: {
+    title: "TvoyaAIbot — твой AI-компаньон",
+    description: "Знакомься, общайся и развивай отношения в Telegram.",
+    images: [{ url: "/og.png", width: 1672, height: 943, alt: "TvoyaAIbot" }],
+  },
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="ru">
+      <body>{children}</body>
+    </html>
+  );
+}
