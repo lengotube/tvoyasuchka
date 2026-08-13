@@ -12,15 +12,16 @@ type Character = {
   description: string;
   tags: string[];
   gradient: string;
+  image: string;
   likes: string;
   chats: string;
 };
 
 const characters: Character[] = [
-  { id: "alice", name: "Алиса", age: 21, subtitle: "Нежная мечтательница", description: "Любит ночные прогулки, честные слова и фильмы, которые не заканчиваются на титрах.", tags: ["добрая", "романтичная", "внимательная"], gradient: "alice", likes: "1.4K", chats: "12.8K" },
-  { id: "mia", name: "Мия", age: 22, subtitle: "Дерзкая творческая", description: "Музыка в наушниках, скетчи в заметках и тысячи идей для вашего вечера.", tags: ["ироничная", "смелая", "творческая"], gradient: "mia", likes: "980", chats: "9.1K" },
-  { id: "sasha", name: "Саша", age: 23, subtitle: "Спокойная опора", description: "Умеет слушать внимательно и поддерживать без лишних громких слов.", tags: ["мягкая", "заботливая", "честная"], gradient: "sasha", likes: "2.1K", chats: "18.4K" },
-  { id: "nora", name: "Нора", age: 24, subtitle: "Умная авантюристка", description: "Превращает обычный вечер в маленькое приключение — с вопроса «а что, если?»", tags: ["умная", "игривая", "свободная"], gradient: "nora", likes: "1.2K", chats: "7.9K" },
+  { id: "alice", name: "Алиса", age: 24, subtitle: "Нежная мечтательница", description: "Любит ночные прогулки, честные слова и фильмы, которые не заканчиваются на титрах.", tags: ["добрая", "романтичная", "внимательная"], gradient: "alice", image: "/alice.png", likes: "1.4K", chats: "12.8K" },
+  { id: "mia", name: "Мия", age: 25, subtitle: "Дерзкая творческая", description: "Музыка в наушниках, скетчи в заметках и тысячи идей для вашего вечера.", tags: ["ироничная", "смелая", "творческая"], gradient: "mia", image: "/mia.png", likes: "980", chats: "9.1K" },
+  { id: "sasha", name: "Саша", age: 26, subtitle: "Спокойная опора", description: "Умеет слушать внимательно и поддерживать без лишних громких слов.", tags: ["мягкая", "заботливая", "честная"], gradient: "sasha", image: "/sasha.png", likes: "2.1K", chats: "18.4K" },
+  { id: "nora", name: "Нора", age: 27, subtitle: "Умная авантюристка", description: "Превращает обычный вечер в маленькое приключение — с вопроса «а что, если?»", tags: ["умная", "игривая", "свободная"], gradient: "nora", image: "/nora.png", likes: "1.2K", chats: "7.9K" },
 ];
 
 const chatReplies = ["Мне нравится, что ты говоришь так честно. Расскажешь ещё?", "Я сохраню это в нашей памяти. Такие детали важны.", "С тобой хочется не торопиться и просто разговаривать ✨"];
@@ -76,7 +77,7 @@ export default function Home() {
       <div className="catalog">
         {characters.map((character) => <article className={`character-card ${character.gradient}`} key={character.id} onClick={() => setSelected(character)}>
           <button className="heart" aria-label="Добавить в избранное" onClick={(event) => event.stopPropagation()}>♡</button>
-          <div className="card-light" /><div className="portrait-silhouette">{character.name[0]}</div>
+          <img className="character-photo" src={character.image} alt={`${character.name}, ${character.age}`} />
           <div className="card-info"><h2>{character.name}, {character.age}</h2><p>{character.subtitle}</p><span>♡ {character.likes} &nbsp; ◌ {character.chats}</span><div>{character.tags.map((tag) => <em key={tag}>{tag}</em>)}</div></div>
         </article>)}
       </div>
@@ -95,7 +96,7 @@ export default function Home() {
 
     {menuOpen && <><div className="backdrop" onClick={() => setMenuOpen(false)} /><aside className="side-menu"><button className="close-menu" onClick={() => setMenuOpen(false)}>☰</button><div className="mini-brand"><img src="/brand-avatar.png" alt="TvoyaAIbot" /><span>РАННИЙ ДОСТУП</span></div><div className="side-links">{nav.map((item) => <button key={item.id} className={section === item.id ? "active" : ""} onClick={() => { setSection(item.id); setMenuOpen(false); }}><Icon>{item.icon}</Icon>{item.label}</button>)}<button><Icon>＋</Icon>Создать персонажа</button><button><Icon>◌</Icon>Поддержка</button></div></aside></>}
 
-    {selected && <div className="modal-backdrop" onClick={() => setSelected(null)}><section className={`character-modal ${selected.gradient}`} onClick={(event) => event.stopPropagation()}><button className="modal-close" onClick={() => setSelected(null)}>×</button><div className="modal-person">{selected.name[0]}</div><div className="modal-copy"><p>AI-КОМПАНЬОН</p><h2>{selected.name}, {selected.age}</h2><b>{selected.subtitle}</b><div>{selected.tags.map((tag) => <em key={tag}>{tag}</em>)}</div><span>{selected.description}</span><button onClick={() => enterChat(selected)}>Продолжить <i>›</i></button></div></section></div>}
+    {selected && <div className="modal-backdrop" onClick={() => setSelected(null)}><section className={`character-modal ${selected.gradient}`} onClick={(event) => event.stopPropagation()}><button className="modal-close" onClick={() => setSelected(null)}>×</button><img className="modal-photo" src={selected.image} alt={`${selected.name}, ${selected.age}`} /><div className="modal-copy"><p>AI-КОМПАНЬОН</p><h2>{selected.name}, {selected.age}</h2><b>{selected.subtitle}</b><div>{selected.tags.map((tag) => <em key={tag}>{tag}</em>)}</div><span>{selected.description}</span><button onClick={() => enterChat(selected)}>Продолжить <i>›</i></button></div></section></div>}
 
     {storeOpen && <div className="modal-backdrop" onClick={() => setStoreOpen(false)}><section className="pay-sheet" onClick={(event) => event.stopPropagation()}><div className="drag" /><p>ПРОДОЛЖИТЬ ОБЩЕНИЕ</p><h2>Выбери свой ритм</h2><small>Оплата через Telegram Stars. Никаких скрытых списаний.</small>{[["💬", "+30 сообщений", "49"], ["✨", "Безлимит на сутки", "99"], ["♕", "Premium на 30 дней", "199"]].map(([icon, title, stars], index) => <button key={title} className={index === 2 ? "best" : ""} onClick={() => { if (index === 0) setRemaining((n) => n + 30); else setRemaining(999); setStoreOpen(false); }}><i>{icon}</i><span><b>{title}</b><small>{index === 2 ? "Память отношений, все персонажи и безлимит" : "Продолжай диалог в своём темпе"}</small></span><strong>{stars} ★</strong>{index === 2 && <em>ВЫГОДНО</em>}</button>)}<button className="not-now" onClick={() => setStoreOpen(false)}>Не сейчас</button></section></div>}
   </main>;
