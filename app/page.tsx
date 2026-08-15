@@ -17,6 +17,10 @@ type Quota = { date: string; freeRemaining: number; bonus: number; unlimitedUnti
 type TelegramWebApp = {
   ready?: () => void;
   expand?: () => void;
+  safeAreaInset?: { top: number; bottom: number; left: number; right: number };
+  contentSafeAreaInset?: { top: number; bottom: number; left: number; right: number };
+  onEvent?: (event: "safeAreaChanged" | "contentSafeAreaChanged", callback: () => void) => void;
+  offEvent?: (event: "safeAreaChanged" | "contentSafeAreaChanged", callback: () => void) => void;
   openInvoice?: (url: string, callback: (status: "paid" | "cancelled" | "failed" | "pending") => void) => void;
 };
 
@@ -77,8 +81,30 @@ export default function Home() {
   const filtersCount = selectedTypes.size + (selectedGenders.size === 3 ? 0 : 1);
 
   useEffect(() => {
-    window.Telegram?.WebApp?.ready?.();
-    window.Telegram?.WebApp?.expand?.();
+    const webApp = window.Telegram?.WebApp;
+    const applySafeArea = () => {
+      const safe = webApp?.safeAreaInset;
+      const content = webApp?.contentSafeAreaInset;
+      const styles = getComputedStyle(document.documentElement);
+      const cssTop = Math.max(
+        Number.parseFloat(styles.getPropertyValue("--tg-safe-area-inset-top")) || 0,
+        Number.parseFloat(styles.getPropertyValue("--tg-content-safe-area-inset-top")) || 0,
+      );
+      const cssBottom = Math.max(
+        Number.parseFloat(styles.getPropertyValue("--tg-safe-area-inset-bottom")) || 0,
+        Number.parseFloat(styles.getPropertyValue("--tg-content-safe-area-inset-bottom")) || 0,
+      );
+      const top = Math.max(safe?.top || 0, content?.top || 0, cssTop);
+      const bottom = Math.max(safe?.bottom || 0, content?.bottom || 0, cssBottom);
+      if (!safe && !content && !cssTop && !cssBottom) return;
+      document.documentElement.style.setProperty("--app-safe-top", `${top}px`);
+      document.documentElement.style.setProperty("--app-safe-bottom", `${bottom}px`);
+    };
+    webApp?.ready?.();
+    webApp?.expand?.();
+    applySafeArea();
+    webApp?.onEvent?.("safeAreaChanged", applySafeArea);
+    webApp?.onEvent?.("contentSafeAreaChanged", applySafeArea);
     let cancelled = false;
     queueMicrotask(() => {
       if (cancelled) return;
@@ -94,7 +120,11 @@ export default function Home() {
       } catch { /* Ignore corrupted device-local data and start clean. */ }
       setHydrated(true);
     });
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+      webApp?.offEvent?.("safeAreaChanged", applySafeArea);
+      webApp?.offEvent?.("contentSafeAreaChanged", applySafeArea);
+    };
   }, []);
 
   useEffect(() => { if (hydrated) localStorage.setItem(CHAT_STORAGE, JSON.stringify(chats)); }, [chats, hydrated]);
