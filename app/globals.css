@@ -89,7 +89,7 @@ img { display: block; max-width: 100%; }
 .search-button { width: 36px; padding: 0; font-size: 21px; }
 .search-box { height: 43px; padding: 0 10px; display: flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid #543172; border-radius: 12px; }
 .search-box span { color: #aa8dbc; }
-.search-box input { min-width: 0; flex: 1; border: 0; outline: 0; background: transparent; font-size: 13px; }
+.search-box input { min-width: 0; flex: 1; border: 0; outline: 0; background: transparent; font-size: 16px; }
 .search-box button { width: 29px; height: 29px; color: #c7b3d5; background: transparent; font-size: 20px; }
 
 .catalog { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; }
@@ -249,7 +249,7 @@ img { display: block; max-width: 100%; }
 .chat-paywall { align-self: center; width: min(100%, 330px); padding: 14px; display: grid; gap: 3px; color: white; background: linear-gradient(135deg, #8c35d3, #541b87); border: 1px solid #b75af0; border-radius: 14px; font-weight: 800; }
 .chat-paywall small { color: #e7cdf7; font-size: 10px; }
 .chat-compose { padding: 8px 10px max(8px, env(safe-area-inset-bottom, 0px)); display: flex; align-items: center; gap: 7px; flex: 0 0 auto; background: #110718; border-top: 1px solid #2d1938; }
-.chat-compose input { min-width: 0; height: 42px; padding: 0 13px; flex: 1; outline: 0; background: #1c1023; border: 1px solid #3d2947; border-radius: 13px; font-size: 12px; }
+.chat-compose input { min-width: 0; height: 42px; padding: 0 13px; flex: 1; outline: 0; background: #1c1023; border: 1px solid #3d2947; border-radius: 13px; font-size: 16px; }
 .chat-compose > button { width: 40px; height: 40px; flex: 0 0 auto; color: #c6aad7; background: #25102f; border-radius: 12px; font-size: 20px; }
 .chat-compose > button[type="submit"] { color: white; background: linear-gradient(135deg, #ad4bf0, #7630c3); font-weight: 800; }
 
