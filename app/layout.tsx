@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://tvoyasuchka.vercel.app"),
   title: "TvoyaAIbot — твой AI-компаньон",
   description: "Telegram-first AI companion с отношениями, памятью и прозрачной оплатой Stars.",
   openGraph: {
